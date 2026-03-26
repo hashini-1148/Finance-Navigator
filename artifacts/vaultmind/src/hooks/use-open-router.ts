@@ -49,7 +49,7 @@ export function useOpenRouter() {
           "Authorization": `Bearer ${state.settings.apiKey}`,
           "Content-Type": "application/json",
           "HTTP-Referer": window.location.href,
-          "X-Title": "VaultMind Finance Assistant"
+          "X-Title": "PocketPro Finance Assistant"
         },
         body: JSON.stringify({
           model: model,

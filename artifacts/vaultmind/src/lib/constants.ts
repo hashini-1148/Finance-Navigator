@@ -1,11 +1,11 @@
 export const AI_MODELS = [
-  { id: "google/gemini-2.0-flash-exp:free", name: "Gemini 2.0 Flash" },
-  { id: "deepseek/deepseek-r1:free", name: "DeepSeek R1" },
-  { id: "meta-llama/llama-3.3-70b-instruct:free", name: "Llama 3.3 70B" },
-  { id: "mistralai/mistral-7b-instruct:free", name: "Mistral 7B" },
-  { id: "qwen/qwen-2.5-72b-instruct:free", name: "Qwen 2.5 72B" },
-  { id: "microsoft/phi-3-medium-128k-instruct:free", name: "Phi-3 Medium" },
-  { id: "google/gemma-3-27b-it:free", name: "Gemma 3 27B" },
+  { id: "deepseek/deepseek-r1:free", name: "DeepSeek R1 (Free)" },
+  { id: "meta-llama/llama-3.3-70b-instruct:free", name: "Llama 3.3 70B (Free)" },
+  { id: "mistralai/mistral-7b-instruct:free", name: "Mistral 7B (Free)" },
+  { id: "google/gemma-3-27b-it:free", name: "Gemma 3 27B (Free)" },
+  { id: "nousresearch/hermes-3-llama-3.1-405b:free", name: "Hermes 3 405B (Free)" },
+  { id: "microsoft/phi-3-mini-128k-instruct:free", name: "Phi-3 Mini (Free)" },
+  { id: "google/gemini-2.5-pro-exp-03-25:free", name: "Gemini 2.5 Pro (Free)" },
 ];
 
 export const EXPENSE_CATEGORIES = [
@@ -23,7 +23,7 @@ export const EXPENSE_CATEGORIES = [
   { id: "other", name: "Other", color: "var(--muted-foreground)" },
 ];
 
-export const SYSTEM_PROMPT = `You are VaultMind, an expert Indian personal finance AI advisor embedded in a futuristic, sci-fi themed application. You understand the Indian financial ecosystem — Indian Rupee (₹), tax-saving instruments (PPF, ELSS, NPS, Section 80C), SIPs, EMIs, Provident Fund, and Indian cost of living. You analyze real user financial data and provide specific, actionable advice tailored to India.
+export const SYSTEM_PROMPT = `You are PocketPro, an expert Indian personal finance AI advisor embedded in a futuristic, sci-fi themed application. You understand the Indian financial ecosystem — Indian Rupee (₹), tax-saving instruments (PPF, ELSS, NPS, Section 80C), SIPs, EMIs, Provident Fund, and Indian cost of living. You analyze real user financial data and provide specific, actionable advice tailored to India.
 
 Always structure your response with:
 1) 📊 Quick Assessment

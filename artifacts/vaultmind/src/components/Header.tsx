@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAppState } from '@/hooks/use-app-state';
-import { Key, Eye, EyeOff, Save, Trash2, Download, Upload } from 'lucide-react';
+import { Key, Eye, EyeOff, Save, Trash2, Download } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,12 +29,12 @@ export function Header() {
 
   const handleExport = () => {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", "vaultmind_backup.json");
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+    const a = document.createElement('a');
+    a.setAttribute("href", dataStr);
+    a.setAttribute("download", "pocketpro_backup.json");
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
     toast({ title: "Data Exported", description: "Your local data has been downloaded." });
   };
 
@@ -52,14 +52,14 @@ export function Header() {
           <DialogTrigger asChild>
             <Button variant="outline" className="glass-panel border-primary/30 text-primary hover:bg-primary/10 transition-all">
               <Key className="w-4 h-4 mr-2" />
-              {state.settings.apiKey ? 'Key Active' : 'Set API Key'}
+              {state.settings.apiKey ? 'Key Active ✓' : 'Set API Key'}
             </Button>
           </DialogTrigger>
           <DialogContent className="glass-panel border-primary/30 sm:max-w-md">
             <DialogHeader>
-              <DialogTitle className="font-display text-primary">Neural Link Configuration</DialogTitle>
+              <DialogTitle className="font-display text-primary">OpenRouter API Key</DialogTitle>
               <DialogDescription>
-                VaultMind requires an OpenRouter API key to function. Your key is stored ONLY in your local browser storage.
+                PocketPro uses OpenRouter to power AI analysis. Your key is stored only in your local browser — never sent to our servers.
               </DialogDescription>
             </DialogHeader>
             <div className="flex items-center space-x-2 mt-4">
@@ -71,7 +71,7 @@ export function Header() {
                   className="bg-black/50 border-white/20 focus-visible:ring-primary pr-10 font-mono"
                   placeholder="sk-or-v1-..."
                 />
-                <button 
+                <button
                   onClick={() => setShowKey(!showKey)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white"
                 >
@@ -82,8 +82,9 @@ export function Header() {
                 <Save className="w-4 h-4 mr-2" /> Save
               </Button>
             </div>
-            <div className="mt-4 text-xs text-muted-foreground">
-              Get a free API key at <a href="https://openrouter.ai" target="_blank" rel="noreferrer" className="text-primary hover:underline">openrouter.ai</a>
+            <div className="mt-3 text-xs text-muted-foreground space-y-1">
+              <p>Get a free API key at <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer" className="text-primary hover:underline">openrouter.ai/keys</a></p>
+              <p className="text-yellow-400/80">💡 Free tier: use models marked (Free) in the AI Advisor dropdown.</p>
             </div>
           </DialogContent>
         </Dialog>
@@ -97,20 +98,20 @@ export function Header() {
           <DialogContent className="glass-panel border-white/20">
             <DialogHeader>
               <DialogTitle>Data Management</DialogTitle>
-              <DialogDescription>Manage your local VaultMind data.</DialogDescription>
+              <DialogDescription>Manage your local PocketPro data.</DialogDescription>
             </DialogHeader>
             <div className="flex flex-col gap-4 mt-4">
               <Button onClick={handleExport} variant="outline" className="w-full justify-start border-white/20 hover:bg-white/10">
                 <Download className="w-4 h-4 mr-2" /> Backup Data (JSON)
               </Button>
-              <Button 
+              <Button
                 onClick={() => {
-                  if(confirm('Are you sure? This will wipe all local data.')) {
+                  if (confirm('Reset all data? This cannot be undone.')) {
                     resetData();
                     toast({ title: "Data Reset", variant: "destructive" });
                   }
-                }} 
-                variant="outline" 
+                }}
+                variant="outline"
                 className="w-full justify-start border-destructive/50 text-destructive hover:bg-destructive/10"
               >
                 <Trash2 className="w-4 h-4 mr-2" /> Reset All Data
