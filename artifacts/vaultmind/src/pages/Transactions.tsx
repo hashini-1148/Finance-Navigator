@@ -10,11 +10,14 @@ import { Search, Plus, ArrowUpRight, ArrowDownRight, Trash2 } from 'lucide-react
 import { format } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const formatINR = (val: number) =>
+  '₹' + val.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+
 export default function Transactions() {
   const { state, addTransaction, deleteTransaction } = useAppState();
   const [search, setSearch] = useState('');
   const [showAdd, setShowAdd] = useState(false);
-  
+
   const [newTx, setNewTx] = useState({
     date: new Date().toISOString().split('T')[0],
     description: '',
@@ -24,7 +27,10 @@ export default function Transactions() {
   });
 
   const filteredTxs = state.transactions
-    .filter(t => t.description.toLowerCase().includes(search.toLowerCase()) || t.category.toLowerCase().includes(search.toLowerCase()))
+    .filter(t =>
+      t.description.toLowerCase().includes(search.toLowerCase()) ||
+      t.category.toLowerCase().includes(search.toLowerCase())
+    )
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const handleAdd = () => {
@@ -41,6 +47,25 @@ export default function Transactions() {
     }
   };
 
+  const exportCSV = () => {
+    const headers = ['Date', 'Description', 'Category', 'Type', 'Amount (₹)'];
+    const rows = state.transactions.map(t => [
+      format(new Date(t.date), 'dd/MM/yyyy'),
+      t.description,
+      t.category,
+      t.type,
+      t.amount.toLocaleString('en-IN')
+    ]);
+    const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'vaultmind-transactions.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-8 pb-12">
       <div className="flex items-center justify-between">
@@ -48,21 +73,26 @@ export default function Transactions() {
           <h1 className="text-4xl font-display font-bold text-white tracking-widest uppercase">Ledger Matrix</h1>
           <p className="text-muted-foreground font-mono mt-2">Transaction history log</p>
         </div>
-        <Button onClick={() => setShowAdd(!showAdd)} className="bg-primary text-black hover:bg-primary/80 box-glow-cyan">
-          <Plus className="w-4 h-4 mr-2" /> Log Entry
-        </Button>
+        <div className="flex gap-3">
+          <Button variant="outline" onClick={exportCSV} className="border-white/20 text-muted-foreground hover:text-white text-xs font-mono">
+            Export CSV
+          </Button>
+          <Button onClick={() => setShowAdd(!showAdd)} className="bg-primary text-black hover:bg-primary/80 box-glow-cyan">
+            <Plus className="w-4 h-4 mr-2" /> Log Entry
+          </Button>
+        </div>
       </div>
 
       <AnimatePresence>
         {showAdd && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }} 
-            animate={{ opacity: 1, height: 'auto' }} 
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             className="glass-panel p-6 border-primary/30 rounded-xl overflow-hidden"
           >
             <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-              <Select value={newTx.type} onValueChange={(v: any) => setNewTx({...newTx, type: v, category: v === 'income' ? 'Income' : ''})}>
+              <Select value={newTx.type} onValueChange={(v: any) => setNewTx({ ...newTx, type: v, category: v === 'income' ? 'Income' : '' })}>
                 <SelectTrigger className="bg-black/50 border-white/20">
                   <SelectValue />
                 </SelectTrigger>
@@ -71,12 +101,12 @@ export default function Transactions() {
                   <SelectItem value="income">Income</SelectItem>
                 </SelectContent>
               </Select>
-              
-              <Input type="date" value={newTx.date} onChange={e => setNewTx({...newTx, date: e.target.value})} className="bg-black/50" />
-              <Input placeholder="Description" value={newTx.description} onChange={e => setNewTx({...newTx, description: e.target.value})} className="bg-black/50 md:col-span-2" />
-              
+
+              <Input type="date" value={newTx.date} onChange={e => setNewTx({ ...newTx, date: e.target.value })} className="bg-black/50" />
+              <Input placeholder="Description" value={newTx.description} onChange={e => setNewTx({ ...newTx, description: e.target.value })} className="bg-black/50 md:col-span-2" />
+
               {newTx.type === 'expense' ? (
-                <Select value={newTx.category} onValueChange={(v) => setNewTx({...newTx, category: v})}>
+                <Select value={newTx.category} onValueChange={(v) => setNewTx({ ...newTx, category: v })}>
                   <SelectTrigger className="bg-black/50 border-white/20">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
@@ -88,7 +118,10 @@ export default function Transactions() {
                 <Input value="Income" disabled className="bg-black/30 border-white/10 opacity-50" />
               )}
 
-              <Input type="number" placeholder="Amount" value={newTx.amount} onChange={e => setNewTx({...newTx, amount: e.target.value})} className="bg-black/50" />
+              <div className="flex items-center gap-1">
+                <span className="text-primary font-bold text-lg">₹</span>
+                <Input type="number" placeholder="Amount" value={newTx.amount} onChange={e => setNewTx({ ...newTx, amount: e.target.value })} className="bg-black/50" />
+              </div>
               <Button onClick={handleAdd} className="bg-primary text-black md:col-span-6 mt-2">Record Transaction</Button>
             </div>
           </motion.div>
@@ -100,8 +133,8 @@ export default function Transactions() {
           <CardTitle className="font-display tracking-widest text-lg">Data Stream</CardTitle>
           <div className="relative w-64">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <Input 
-              placeholder="Query logs..." 
+            <Input
+              placeholder="Query logs..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-9 bg-black/50 border-white/20 focus-visible:ring-primary h-9 font-mono text-xs"
@@ -123,7 +156,7 @@ export default function Transactions() {
               {filteredTxs.map((tx) => (
                 <TableRow key={tx.id} className="border-white/5 hover:bg-white/5 transition-colors group">
                   <TableCell className="font-mono text-xs text-muted-foreground">
-                    {format(new Date(tx.date), 'MM.dd.yyyy')}
+                    {format(new Date(tx.date), 'dd.MM.yyyy')}
                   </TableCell>
                   <TableCell className="font-sans font-medium text-white">{tx.description}</TableCell>
                   <TableCell>
@@ -131,12 +164,21 @@ export default function Transactions() {
                       {tx.category}
                     </span>
                   </TableCell>
-                  <TableCell className={`text-right font-mono font-bold flex items-center justify-end gap-2 ${tx.type === 'income' ? 'text-primary' : 'text-white'}`}>
-                    {tx.type === 'income' ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3 text-destructive" />}
-                    ${tx.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                  <TableCell className={`text-right font-mono font-bold ${tx.type === 'income' ? 'text-primary' : 'text-white'}`}>
+                    <div className="flex items-center justify-end gap-2">
+                      {tx.type === 'income'
+                        ? <ArrowUpRight className="w-3 h-3 text-primary" />
+                        : <ArrowDownRight className="w-3 h-3 text-destructive" />}
+                      {formatINR(tx.amount)}
+                    </div>
                   </TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="icon" onClick={() => deleteTransaction(tx.id)} className="h-8 w-8 opacity-0 group-hover:opacity-100 hover:text-destructive hover:bg-destructive/10 transition-all">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => deleteTransaction(tx.id)}
+                      className="h-8 w-8 opacity-0 group-hover:opacity-100 hover:text-destructive hover:bg-destructive/10 transition-all"
+                    >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </TableCell>

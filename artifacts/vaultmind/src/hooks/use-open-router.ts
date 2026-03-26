@@ -17,12 +17,12 @@ export function useOpenRouter() {
     const actualSpent = state.transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
     
     return `
-    USER FINANCIAL CONTEXT:
-    - Monthly Income: $${state.income}
-    - Budgeted Expenses: $${totalExpenses}
-    - Actual Spent (All Time): $${actualSpent}
-    - Savings Goals: ${state.goals.map(g => `${g.name} ($${g.current}/$${g.target})`).join(', ')}
-    - Recent Transactions: ${state.transactions.slice(0, 5).map(t => `${t.date}: ${t.description} ($${t.amount})`).join(', ')}
+    USER FINANCIAL CONTEXT (Indian Rupees ₹):
+    - Monthly Income: ₹${state.income.toLocaleString('en-IN')}
+    - Budgeted Expenses: ₹${totalExpenses.toLocaleString('en-IN')}
+    - Actual Spent (All Time): ₹${actualSpent.toLocaleString('en-IN')}
+    - Savings Goals: ${state.goals.map(g => `${g.name} (₹${g.current.toLocaleString('en-IN')}/₹${g.target.toLocaleString('en-IN')})`).join(', ')}
+    - Recent Transactions: ${state.transactions.slice(0, 5).map(t => `${t.date}: ${t.description} (₹${t.amount.toLocaleString('en-IN')})`).join(', ')}
     `;
   };
 

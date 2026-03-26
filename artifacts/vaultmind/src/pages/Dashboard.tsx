@@ -3,12 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowUpRight, ArrowDownRight, Activity, Wallet } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, BarChart, Bar, XAxis, YAxis } from 'recharts';
 
+const formatINR = (val: number) =>
+  '₹' + val.toLocaleString('en-IN');
+
 export default function Dashboard() {
   const { state } = useAppState();
 
   const totalExpenses = state.expenses.reduce((sum, e) => sum + e.budgeted, 0);
   const netSavings = state.income - totalExpenses;
-  const savingsRate = ((netSavings / state.income) * 100).toFixed(1);
+  const savingsRate = state.income > 0 ? ((netSavings / state.income) * 100).toFixed(1) : '0.0';
 
   const expenseData = state.expenses.map(e => ({
     name: e.category,
@@ -17,12 +20,13 @@ export default function Dashboard() {
 
   const COLORS = ['#00f5c8', '#0090ff', '#b537f2', '#ff6b35', '#4ade80', '#facc15'];
 
-  // Mock trend data
   const trendData = [
     { name: 'Jan', income: state.income, expense: totalExpenses * 0.9 },
     { name: 'Feb', income: state.income, expense: totalExpenses * 1.1 },
     { name: 'Mar', income: state.income * 1.05, expense: totalExpenses },
     { name: 'Apr', income: state.income, expense: totalExpenses * 0.95 },
+    { name: 'May', income: state.income * 1.02, expense: totalExpenses * 0.88 },
+    { name: 'Jun', income: state.income, expense: totalExpenses },
   ];
 
   return (
@@ -34,9 +38,11 @@ export default function Dashboard() {
         </div>
         <div className="text-right">
           <div className="text-2xl font-mono text-primary text-glow-cyan">
-            {new Date().toLocaleTimeString('en-US', { hour12: false })}
+            {new Date().toLocaleTimeString('en-IN', { hour12: false })}
           </div>
-          <div className="text-xs text-muted-foreground uppercase tracking-widest">{new Date().toLocaleDateString()}</div>
+          <div className="text-xs text-muted-foreground uppercase tracking-widest">
+            {new Date().toLocaleDateString('en-IN')}
+          </div>
         </div>
       </div>
 
@@ -49,7 +55,7 @@ export default function Dashboard() {
             <ArrowUpRight className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-display font-bold text-white">${state.income.toLocaleString()}</div>
+            <div className="text-3xl font-display font-bold text-white">{formatINR(state.income)}</div>
           </CardContent>
         </Card>
 
@@ -60,7 +66,7 @@ export default function Dashboard() {
             <ArrowDownRight className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-display font-bold text-white">${totalExpenses.toLocaleString()}</div>
+            <div className="text-3xl font-display font-bold text-white">{formatINR(totalExpenses)}</div>
           </CardContent>
         </Card>
 
@@ -71,7 +77,7 @@ export default function Dashboard() {
             <Wallet className="h-4 w-4 text-accent" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-display font-bold text-white">${netSavings.toLocaleString()}</div>
+            <div className="text-3xl font-display font-bold text-white">{formatINR(netSavings)}</div>
           </CardContent>
         </Card>
 
@@ -106,11 +112,12 @@ export default function Dashboard() {
                   dataKey="value"
                   stroke="none"
                 >
-                  {expenseData.map((entry, index) => (
+                  {expenseData.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} style={{ filter: `drop-shadow(0px 0px 5px ${COLORS[index % COLORS.length]})` }} />
                   ))}
                 </Pie>
-                <RechartsTooltip 
+                <RechartsTooltip
+                  formatter={(value: number) => [formatINR(value), '']}
                   contentStyle={{ backgroundColor: 'rgba(7, 21, 37, 0.9)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', borderRadius: '8px' }}
                   itemStyle={{ color: '#fff', fontFamily: 'Space Mono' }}
                 />
@@ -126,15 +133,16 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={trendData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+              <BarChart data={trendData} margin={{ top: 20, right: 30, left: 10, bottom: 0 }}>
                 <XAxis dataKey="name" stroke="#4a7a9b" fontFamily="Space Mono" fontSize={12} />
-                <YAxis stroke="#4a7a9b" fontFamily="Space Mono" fontSize={12} />
-                <RechartsTooltip 
-                  cursor={{fill: 'rgba(255,255,255,0.05)'}}
+                <YAxis stroke="#4a7a9b" fontFamily="Space Mono" fontSize={11} tickFormatter={(v) => '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)} />
+                <RechartsTooltip
+                  cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                  formatter={(value: number) => [formatINR(value), '']}
                   contentStyle={{ backgroundColor: 'rgba(7, 21, 37, 0.9)', border: '1px solid rgba(0, 245, 200, 0.3)', borderRadius: '8px', boxShadow: '0 0 20px rgba(0,245,200,0.1)' }}
                 />
-                <Bar dataKey="income" fill="#0090ff" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="expense" fill="#ff6b35" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="income" name="Income" fill="#0090ff" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="expense" name="Expense" fill="#ff6b35" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

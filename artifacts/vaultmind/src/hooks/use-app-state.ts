@@ -38,20 +38,25 @@ export type AppState = {
 };
 
 const defaultState: AppState = {
-  income: 5000,
+  income: 75000,
   expenses: [
-    { id: uuidv4(), category: 'Housing', budgeted: 1500 },
-    { id: uuidv4(), category: 'Food & Dining', budgeted: 600 },
-    { id: uuidv4(), category: 'Transportation', budgeted: 400 },
-    { id: uuidv4(), category: 'Utilities', budgeted: 300 },
+    { id: uuidv4(), category: 'Rent / EMI', budgeted: 18000 },
+    { id: uuidv4(), category: 'Food & Groceries', budgeted: 8000 },
+    { id: uuidv4(), category: 'Transport', budgeted: 4000 },
+    { id: uuidv4(), category: 'Electricity & Bills', budgeted: 3000 },
+    { id: uuidv4(), category: 'Mobile / Internet', budgeted: 999 },
+    { id: uuidv4(), category: 'SIP / Investments', budgeted: 10000 },
   ],
   goals: [
-    { id: uuidv4(), name: 'Emergency Fund', target: 10000, current: 4500, targetDate: '2025-12-31', priority: 'Emergency Fund' }
+    { id: uuidv4(), name: 'Emergency Fund (6 months)', target: 450000, current: 180000, targetDate: '2026-12-31', priority: 'Emergency Fund' },
+    { id: uuidv4(), name: 'Home Down Payment', target: 2000000, current: 250000, targetDate: '2028-06-30', priority: 'Home' },
   ],
   transactions: [
-    { id: uuidv4(), date: new Date().toISOString(), description: 'Salary', category: 'Income', amount: 5000, type: 'income' },
-    { id: uuidv4(), date: new Date().toISOString(), description: 'Rent', category: 'Housing', amount: 1500, type: 'expense' },
-    { id: uuidv4(), date: new Date().toISOString(), description: 'Groceries', category: 'Food & Dining', amount: 120, type: 'expense' },
+    { id: uuidv4(), date: new Date().toISOString(), description: 'Monthly Salary', category: 'Income', amount: 75000, type: 'income' },
+    { id: uuidv4(), date: new Date().toISOString(), description: 'Rent', category: 'Rent / EMI', amount: 18000, type: 'expense' },
+    { id: uuidv4(), date: new Date().toISOString(), description: 'Big Basket Groceries', category: 'Food & Groceries', amount: 3200, type: 'expense' },
+    { id: uuidv4(), date: new Date().toISOString(), description: 'Zerodha SIP', category: 'SIP / Investments', amount: 10000, type: 'expense' },
+    { id: uuidv4(), date: new Date().toISOString(), description: 'Metro + Ola', category: 'Transport', amount: 1800, type: 'expense' },
   ],
   settings: {
     apiKey: '',

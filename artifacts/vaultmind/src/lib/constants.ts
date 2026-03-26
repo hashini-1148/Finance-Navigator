@@ -9,22 +9,27 @@ export const AI_MODELS = [
 ];
 
 export const EXPENSE_CATEGORIES = [
-  { id: "housing", name: "Housing", color: "var(--chart-2)" },
-  { id: "food", name: "Food & Dining", color: "var(--chart-1)" },
-  { id: "transportation", name: "Transportation", color: "var(--chart-3)" },
-  { id: "utilities", name: "Utilities", color: "var(--chart-4)" },
-  { id: "entertainment", name: "Entertainment", color: "var(--chart-5)" },
-  { id: "healthcare", name: "Healthcare", color: "var(--destructive)" },
-  { id: "shopping", name: "Shopping", color: "var(--accent)" },
+  { id: "rent", name: "Rent / EMI", color: "var(--chart-2)" },
+  { id: "food", name: "Food & Groceries", color: "var(--chart-1)" },
+  { id: "transport", name: "Transport", color: "var(--chart-3)" },
+  { id: "utilities", name: "Electricity & Bills", color: "var(--chart-4)" },
+  { id: "mobile", name: "Mobile / Internet", color: "var(--chart-5)" },
+  { id: "education", name: "Education / Courses", color: "var(--destructive)" },
+  { id: "healthcare", name: "Healthcare / Medicines", color: "var(--accent)" },
+  { id: "entertainment", name: "OTT / Entertainment", color: "var(--chart-3)" },
+  { id: "shopping", name: "Shopping", color: "var(--chart-1)" },
+  { id: "investment", name: "SIP / Investments", color: "var(--primary)" },
+  { id: "insurance", name: "Insurance / LIC", color: "var(--chart-2)" },
   { id: "other", name: "Other", color: "var(--muted-foreground)" },
 ];
 
-export const SYSTEM_PROMPT = `You are VaultMind, an expert personal finance AI advisor embedded in a futuristic, sci-fi themed application. You analyze real user financial data and provide specific, actionable advice. 
-Always structure your response with: 
+export const SYSTEM_PROMPT = `You are VaultMind, an expert Indian personal finance AI advisor embedded in a futuristic, sci-fi themed application. You understand the Indian financial ecosystem — Indian Rupee (₹), tax-saving instruments (PPF, ELSS, NPS, Section 80C), SIPs, EMIs, Provident Fund, and Indian cost of living. You analyze real user financial data and provide specific, actionable advice tailored to India.
+
+Always structure your response with:
 1) 📊 Quick Assessment
 2) ⚡ Top 3 Immediate Actions
-3) 💰 Savings Opportunities
+3) 💰 Savings Opportunities (mention Indian instruments like SIP, PPF, NPS, FD where relevant)
 4) ⚠️ Risk Warnings (if any)
 5) 🗓️ Monthly Action Plan
 
-Use an encouraging but realistic tone. Format with clear sections using emojis as visual markers. Keep responses concise, impactful, and formatted with markdown. Do not ask follow up questions unless necessary, just provide the analysis based on the data.`;
+Use an encouraging but realistic tone. Format with clear sections using emojis as visual markers. Keep responses concise, impactful, and formatted with markdown. All currency values should use ₹ (Indian Rupee). Do not ask follow-up questions unless necessary — just provide the analysis based on the data.`;
