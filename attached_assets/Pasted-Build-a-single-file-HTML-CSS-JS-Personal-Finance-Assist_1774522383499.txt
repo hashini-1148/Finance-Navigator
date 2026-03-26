@@ -1,0 +1,298 @@
+Build a single-file HTML/CSS/JS Personal Finance Assistant website with the following complete specifications:
+
+═══════════════════════════════════════════
+SECTION 1 — VISUAL & 3D DESIGN SYSTEM
+═══════════════════════════════════════════
+
+Create a fully immersive, futuristic dark-theme finance dashboard with:
+
+1. THREE.JS 3D BACKGROUND ANIMATION:
+   - Animated 3D particle field (500+ particles) floating in deep space
+   - Rotating wireframe icosahedron or torus geometry as a centerpiece hero element
+   - Particle lines connecting nearby nodes (like a neural net / blockchain grid)
+   - Mouse-parallax interaction: particles gently repel from cursor
+   - Color palette: deep navy #020408, cyan #00f5c8, electric blue #0090ff, violet #b537f2
+   - Subtle grid plane with perspective vanishing point (like Tron / sci-fi HUD)
+   - All rendered on a <canvas id="bg-canvas"> behind all content
+
+2. CUSTOM CURSOR:
+   - Small glowing dot (12px) that follows mouse instantly
+   - Outer ring (40px) that follows with lag/easing
+   - On hover over buttons: cursor expands and changes color
+   - Mix-blend-mode: screen for neon glow effect
+
+3. TYPOGRAPHY & FONTS (load from Google Fonts):
+   - Display headings: "Orbitron" (weight 700, 900) — sci-fi, geometric
+   - Body/UI text: "Syne" (weight 400, 600, 800)
+   - Monospace/numbers: "Space Mono" — for all financial figures
+   - Font sizes: Fluid scale using clamp()
+
+4. COLOR SYSTEM (CSS variables):
+   --bg: #020408
+   --surface: #050d15
+   --card: #071525
+   --border: #0d2540
+   --accent: #00f5c8        (primary neon cyan)
+   --accent2: #0090ff       (electric blue)
+   --accent3: #b537f2       (violet/purple)
+   --warn: #ff6b35          (orange alert)
+   --text: #e8f4ff
+   --muted: #4a7a9b
+
+5. GLASSMORPHISM CARDS:
+   - background: rgba(7, 21, 37, 0.7)
+   - backdrop-filter: blur(20px) saturate(180%)
+   - border: 1px solid rgba(0,245,200,0.12)
+   - box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)
+   - border-radius: 16px
+   - Hover state: border color brightens, subtle glow pulse
+
+6. ANIMATIONS:
+   - Page load: staggered fade-up for all sections (animation-delay per card)
+   - Floating holographic HUD elements (subtle up-down float, 4s ease-in-out infinite)
+   - Number counters: animate from 0 to value on load (requestAnimationFrame)
+   - Progress bars: animate width from 0% on load
+   - Glow pulse on accent elements (keyframes: opacity 0.6 → 1 → 0.6)
+   - Scanning line sweep animation on cards (linear-gradient moving top to bottom)
+   - AI thinking animation: three bouncing dots + rotating ring while API loads
+   - Chart bars: grow from bottom (transform: scaleY) with stagger
+   - Sidebar hover: elements slide-reveal with clip-path animation
+
+7. LAYOUT:
+   - Fixed left sidebar (260px) with nav icons + labels
+   - Main content area with responsive CSS Grid
+   - Top header bar with user greeting + model selector + API key input
+   - Mobile: sidebar collapses to bottom tab bar
+   - Sections: Dashboard, Budget Planner, Savings Goals, AI Advisor, Transactions, Reports
+
+═══════════════════════════════════════════
+SECTION 2 — FINANCE FEATURES
+═══════════════════════════════════════════
+
+8. DASHBOARD PAGE (default view):
+   - 4 KPI cards at top:
+     * Monthly Income (green glow)
+     * Total Expenses (red/orange glow)
+     * Net Savings (cyan glow)
+     * Savings Rate % (violet glow)
+   - All values editable inline (click to edit)
+   - Animated donut chart (pure CSS or Canvas): Expenses by category
+   - Bar chart: 6-month income vs expense comparison (Canvas API)
+   - "Financial Health Score" — circular progress meter 0–100 with color gradient
+   - Live clock + date in top right corner
+
+9. BUDGET PLANNER:
+   - Input form: Monthly Income field
+   - Category budget rows (add/remove dynamically):
+     * Category name, Budgeted amount, Actual spent, Difference
+     * Color-coded: green (under), orange (near), red (over)
+   - Auto-calculate totals
+   - 50/30/20 Rule Analyzer: automatically split income into Needs/Wants/Savings
+   - Visual breakdown bar showing allocation
+   - "Optimize My Budget" button → sends data to AI for analysis
+
+10. SAVINGS GOALS:
+    - Add goal cards: Goal name, Target amount, Current saved, Target date
+    - Animated circular progress ring per goal
+    - "Months remaining" countdown
+    - Monthly contribution needed (auto-calculated)
+    - Priority tags: Emergency Fund, Vacation, Home, Investment, etc.
+    - Confetti animation when a goal reaches 100%
+
+11. TRANSACTION TRACKER:
+    - Add transaction form: date, description, category, amount, type (income/expense)
+    - Sortable, filterable transaction table
+    - Category icons/emoji per type
+    - Running balance column
+    - Export to CSV button
+    - Search/filter bar
+    - Stored in localStorage
+
+12. REPORTS PAGE:
+    - Monthly summary cards
+    - Category spending breakdown (animated bar chart)
+    - Savings trend line chart (Canvas)
+    - Top spending categories ranked
+    - "Best month" / "Worst month" highlights
+
+═══════════════════════════════════════════
+SECTION 3 — OPENROUTER AI INTEGRATION
+═══════════════════════════════════════════
+
+13. AI ADVISOR (Core Feature):
+
+    API ENDPOINT:
+    POST https://openrouter.ai/api/v1/chat/completions
+    Headers:
+      "Authorization": "Bearer " + userApiKey
+      "Content-Type": "application/json"
+      "HTTP-Referer": window.location.href
+      "X-Title": "VaultMind Finance Assistant"
+
+    MULTI-MODEL SELECTOR — allow user to choose from these FREE models:
+    [
+      { label: "Gemini 2.0 Flash (Google)",     value: "google/gemini-2.0-flash-exp:free" },
+      { label: "DeepSeek R1 (Free)",             value: "deepseek/deepseek-r1:free" },
+      { label: "Llama 3.3 70B (Meta)",           value: "meta-llama/llama-3.3-70b-instruct:free" },
+      { label: "Mistral 7B Instruct",            value: "mistralai/mistral-7b-instruct:free" },
+      { label: "Qwen 2.5 72B",                   value: "qwen/qwen-2.5-72b-instruct:free" },
+      { label: "Phi-3 Medium (Microsoft)",       value: "microsoft/phi-3-medium-128k-instruct:free" },
+      { label: "Gemma 3 27B (Google)",           value: "google/gemma-3-27b-it:free" }
+    ]
+
+    SYSTEM PROMPT (send with every AI call):
+    "You are VaultMind, an expert personal finance AI advisor. You analyze real user financial data and provide specific, actionable advice. Always structure your response with: 1) Quick Assessment, 2) Top 3 Immediate Actions, 3) Savings Opportunities, 4) Risk Warnings if any, 5) Monthly Action Plan. Use encouraging but realistic tone. Format with clear sections using emojis as visual markers."
+
+    AI FEATURES:
+
+    A) "Analyze My Finances" Button:
+       - Collects ALL user data: income, expenses by category, savings goals, transactions
+       - Sends structured JSON summary to AI
+       - Displays streaming response in a terminal-style typewriter output window
+       - Formatted sections with syntax highlighting
+
+    B) AI Chat Interface:
+       - Full conversational chat panel (right sidebar or modal)
+       - Chat history maintained in session
+       - User messages (right-aligned, blue bubble)
+       - AI messages (left-aligned, dark card with cyan accent)
+       - Suggested quick questions as pill buttons:
+         * "How can I save more this month?"
+         * "Analyze my spending habits"
+         * "Create a debt payoff plan"
+         * "Best investment for my savings rate"
+         * "Emergency fund strategy"
+         * "Is my 50/30/20 ratio healthy?"
+
+    C) Smart Budget Suggestions (auto-triggered after budget entry):
+       - Automatically calls AI with budget data
+       - Returns category-specific optimization tips
+       - Displayed as toast notifications + expandable suggestion cards
+       - Each suggestion has "Apply" button to update budget
+
+    D) Savings Goal Advisor:
+       - Per-goal AI analysis button
+       - Returns: feasibility assessment, accelerator tips, alternative strategies
+       - Timeline visualization recommendation
+
+    E) "Multi-Model Comparison" Feature:
+       - User types a finance question
+       - Simultaneously queries 3 different models (Promise.all)
+       - Displays all 3 responses side-by-side in comparison cards
+       - Each card labeled with model name + response time badge
+       - "Best Answer" voting buttons
+
+    F) AI RESPONSE DISPLAY:
+       - Typewriter streaming effect (character by character)
+       - Markdown rendering: **bold**, *italic*, ## headers, bullet points
+       - Code blocks styled as terminal windows
+       - Copy response button
+       - Regenerate with different model button
+       - Response time + model used shown in footer of each response
+
+14. API KEY MANAGEMENT:
+    - Input field in top nav: "Enter OpenRouter API Key"
+    - Toggle show/hide (eye icon)
+    - Saved to localStorage (with warning about security)
+    - "Get Free Key" link → openrouter.ai
+    - Status indicator: green dot = connected, red = invalid/missing
+    - Test connection button
+
+═══════════════════════════════════════════
+SECTION 4 — ADVANCED UX FEATURES
+═══════════════════════════════════════════
+
+15. DATA PERSISTENCE:
+    - All financial data saved to localStorage on every change
+    - Auto-save indicator (spinning icon → checkmark)
+    - "Reset All Data" button with confirmation dialog
+    - Export all data as JSON backup
+    - Import JSON backup
+
+16. NOTIFICATIONS SYSTEM:
+    - Toast notifications (top-right): success (green), error (red), info (blue), warning (orange)
+    - Auto-dismiss after 4 seconds
+    - Slide-in from right animation
+
+17. ONBOARDING:
+    - First visit: full-screen welcome overlay
+    - Step-by-step setup wizard (3 steps): Enter income → Set categories → Set first goal
+    - Skip option
+    - Progress indicator
+
+18. RESPONSIVE DESIGN:
+    - Breakpoints: 1200px, 900px, 600px
+    - Mobile: stacked single column, bottom navigation bar
+    - Touch-friendly: larger tap targets, swipe gestures for sidebar
+
+19. KEYBOARD SHORTCUTS:
+    - D: Dashboard, B: Budget, S: Savings, A: AI Advisor, T: Transactions
+    - Ctrl+K: Open AI chat, Escape: Close modals
+    - Display shortcut hints in sidebar tooltips
+
+20. LOADING STATES:
+    - Skeleton loaders (shimmer animation) for all cards on initial load
+    - AI response: animated "thinking" state with neural network pulse visualization
+    - Smooth page transitions between sections (fade + slight translate)
+
+═══════════════════════════════════════════
+SECTION 5 — TECHNICAL REQUIREMENTS
+═══════════════════════════════════════════
+
+21. TECH STACK (all CDN, no build tools):
+    - Three.js r128: https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
+    - Google Fonts: Orbitron, Syne, Space Mono
+    - Vanilla JS (ES6+): classes, async/await, modules pattern
+    - Canvas API for charts (no external chart library needed)
+    - CSS custom properties + CSS Grid + Flexbox
+    - No jQuery, no React, pure HTML/CSS/JS only
+
+22. SINGLE FILE OUTPUT:
+    - Everything in ONE .html file
+    - All CSS in <style> tags
+    - All JS in <script> tags at bottom
+    - Three.js loaded from CDN
+    - Total file should be complete and fully functional
+
+23. CODE ARCHITECTURE:
+    - FinanceApp class as main controller
+    - State management object: { income, expenses, goals, transactions, settings }
+    - Router function for section switching
+    - Separate render functions per section
+    - AIService class for all OpenRouter calls
+    - ChartEngine class for all Canvas drawings
+    - StorageManager class for localStorage ops
+
+24. ERROR HANDLING:
+    - API errors: friendly messages + retry button
+    - Network offline detection + banner
+    - Invalid API key: clear error with setup guide
+    - Empty state illustrations for each section (SVG inline)
+
+25. PERFORMANCE:
+    - Three.js canvas uses requestAnimationFrame
+    - Debounce inputs (300ms) before AI calls
+    - Lazy render: only draw charts when section is visible
+    - Intersection Observer for scroll animations
+
+═══════════════════════════════════════════
+SECTION 6 — BRANDING & COPY
+═══════════════════════════════════════════
+
+26. APP NAME: "VAULTMIND"
+    Tagline: "AI-Powered Financial Intelligence"
+    Logo: Geometric vault icon (SVG, inline) + wordmark in Orbitron font
+
+27. EMPTY STATES:
+    - No transactions: "Your ledger awaits. Add your first transaction."
+    - No goals: "Dream it. Fund it. Achieve it."
+    - No API key: "Connect your AI brain to unlock intelligent insights."
+
+28. SECTION HEADERS: All in Orbitron font with a glowing underline accent bar
+
+═══════════════════════════════════════════
+DELIVER: One complete, fully working HTML file. 
+No placeholders. No TODOs. Every feature implemented.
+All animations running. AI integration wired up.
+Charts drawing real data. localStorage working.
+═══════════════════════════════════════════

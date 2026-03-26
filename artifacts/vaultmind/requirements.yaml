@@ -1,0 +1,22 @@
+packages:
+  "framer-motion": "For fluid UI animations, page transitions, and the custom glowing cursor"
+  "recharts": "For beautiful, animated data visualization and charts"
+  "three": "Required for the immersive 3D particle background"
+  "@types/three": "TypeScript definitions for Three.js"
+  "@react-three/fiber": "React renderer for Three.js to easily integrate the 3D background"
+  "@react-three/drei": "Useful helpers for React Three Fiber"
+  "canvas-confetti": "For celebratory animations when savings goals are reached"
+  "@types/canvas-confetti": "TypeScript definitions for canvas-confetti"
+  "date-fns": "For formatting transaction and goal dates elegantly"
+  "uuid": "For generating unique IDs for local transactions and goals"
+  "@types/uuid": "TypeScript definitions for uuid"
+  "clsx": "For conditional class names"
+  "tailwind-merge": "For merging tailwind classes safely"
+  "lucide-react": "Already in stack, but ensuring it's available for sci-fi iconography"
+
+images: []
+
+notes:
+  - "The application is entirely client-side. All data is persisted to localStorage."
+  - "The backend API is completely bypassed; AI requests go directly to OpenRouter from the browser."
+  - "The OpenRouter API requires a valid key to function. The app handles missing keys gracefully."
