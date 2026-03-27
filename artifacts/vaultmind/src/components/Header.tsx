@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAppState } from '@/hooks/use-app-state';
-import { Key, Eye, EyeOff, Save, Trash2, Download } from 'lucide-react';
+import { Key, Eye, EyeOff, Save, Trash2, Download, Menu } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,11 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-export function Header() {
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+export function Header({ onMenuClick }: HeaderProps) {
   const { state, updateSettings, resetData } = useAppState();
   const [showKey, setShowKey] = useState(false);
   const [keyInput, setKeyInput] = useState(state.settings.apiKey);
@@ -36,23 +40,38 @@ export function Header() {
   };
 
   return (
-    <header className="h-20 border-b border-white/10 bg-background/40 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-40">
-      <div>
-        <h2 className="text-xl font-display font-bold text-foreground tracking-widest flex items-center gap-3">
-          <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#00f5c8]"></span>
-          SYS.OP.MODE
-        </h2>
+    <header className="h-14 sm:h-16 lg:h-20 border-b border-white/10 bg-background/40 backdrop-blur-md flex items-center justify-between px-3 sm:px-5 lg:px-8 sticky top-0 z-40 gap-3">
+      <div className="flex items-center gap-3">
+        {/* Hamburger for mobile */}
+        <button
+          onClick={onMenuClick}
+          className="md:hidden text-muted-foreground hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
+          aria-label="Open menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <div className="hidden sm:block">
+          <h2 className="text-sm sm:text-base lg:text-xl font-display font-bold text-foreground tracking-widest flex items-center gap-2 sm:gap-3">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#00f5c8]"></span>
+            SYS.OP.MODE
+          </h2>
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-3">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" className="glass-panel border-primary/30 text-primary hover:bg-primary/10 transition-all">
-              <Key className="w-4 h-4 mr-2" />
-              {state.settings.apiKey ? 'D4RK LEIGE KEY ✓' : 'Set D4RK LEIGE KEY'}
+            <Button variant="outline" size="sm" className="glass-panel border-primary/30 text-primary hover:bg-primary/10 transition-all text-xs sm:text-sm px-2 sm:px-3">
+              <Key className="w-3.5 h-3.5 sm:mr-2" />
+              <span className="hidden sm:inline">
+                {state.settings.apiKey ? 'D4RK LEIGE KEY ✓' : 'Set D4RK LEIGE KEY'}
+              </span>
+              <span className="sm:hidden">
+                {state.settings.apiKey ? '✓' : 'Key'}
+              </span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass-panel border-primary/30 sm:max-w-lg">
+          <DialogContent className="glass-panel border-primary/30 sm:max-w-lg mx-4">
             <DialogHeader>
               <DialogTitle className="font-display text-primary flex items-center gap-2">
                 <span>D4RK LEIGE KEY</span>
@@ -79,7 +98,7 @@ export function Header() {
                 </button>
               </div>
               <Button onClick={handleSaveKey} className="bg-primary text-primary-foreground hover:bg-primary/80">
-                <Save className="w-4 h-4 mr-2" /> Save
+                <Save className="w-4 h-4 sm:mr-2" /> <span className="hidden sm:inline">Save</span>
               </Button>
             </div>
 
@@ -98,11 +117,11 @@ export function Header() {
 
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full">
-              <Download className="w-5 h-5 text-muted-foreground hover:text-white" />
+            <Button variant="ghost" size="icon" className="hover:bg-white/10 rounded-full w-8 h-8 sm:w-9 sm:h-9">
+              <Download className="w-4 h-4 text-muted-foreground hover:text-white" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass-panel border-white/20">
+          <DialogContent className="glass-panel border-white/20 mx-4">
             <DialogHeader>
               <DialogTitle>Data Management</DialogTitle>
               <DialogDescription>Manage your local PocketPro data.</DialogDescription>

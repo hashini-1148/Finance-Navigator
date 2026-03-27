@@ -29,46 +29,46 @@ export default function BudgetPlanner() {
   const savings = state.income * 0.2;
 
   return (
-    <div className="space-y-8 pb-12">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8 pb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white tracking-widest uppercase">Resource Allocation</h1>
-          <p className="text-muted-foreground font-mono mt-2">Budget Matrix Configuration</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-white tracking-widest uppercase">Resource Allocation</h1>
+          <p className="text-muted-foreground font-mono mt-1 sm:mt-2 text-sm">Budget Matrix Configuration</p>
         </div>
         <Button
           onClick={() => setLocation('/ai-advisor')}
-          className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50 box-glow-cyan"
+          className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50 box-glow-cyan w-full sm:w-auto"
         >
           <Zap className="w-4 h-4 mr-2" /> AI Optimise
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="lg:col-span-2 space-y-5 sm:space-y-6">
           <Card className="glass-panel border-white/10">
             <CardHeader>
-              <CardTitle className="font-display text-xl text-primary flex justify-between">
+              <CardTitle className="font-display text-lg sm:text-xl text-primary flex flex-col sm:flex-row sm:justify-between gap-1">
                 <span>Monthly Influx</span>
                 <span className="font-mono text-white">{formatINR(state.income)}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4">
-                <span className="text-2xl text-primary font-bold">₹</span>
+              <div className="flex items-center gap-3 sm:gap-4">
+                <span className="text-xl sm:text-2xl text-primary font-bold">₹</span>
                 <Input
                   type="number"
                   value={state.income}
                   onChange={(e) => updateState({ income: Number(e.target.value) })}
-                  className="bg-black/50 border-primary/30 font-mono text-xl focus-visible:ring-primary"
+                  className="bg-black/50 border-primary/30 font-mono text-base sm:text-xl focus-visible:ring-primary"
                 />
               </div>
             </CardContent>
           </Card>
 
           <Card className="glass-panel border-white/10">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="font-display text-xl">Allocation Vectors</CardTitle>
-              <div className="font-mono text-sm text-muted-foreground">
+            <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <CardTitle className="font-display text-lg sm:text-xl">Allocation Vectors</CardTitle>
+              <div className="font-mono text-xs sm:text-sm text-muted-foreground">
                 Total:{' '}
                 <span className={totalBudgeted > state.income ? 'text-destructive text-glow-orange' : 'text-primary text-glow-cyan'}>
                   {formatINR(totalBudgeted)}
@@ -76,65 +76,67 @@ export default function BudgetPlanner() {
                 / {formatINR(state.income)}
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4">
               {state.expenses.map((exp) => (
-                <div key={exp.id} className="flex items-center gap-4 group">
+                <div key={exp.id} className="flex items-center gap-2 sm:gap-4 group">
                   <Input
                     value={exp.category}
                     readOnly
-                    className="bg-transparent border-white/10 font-sans"
+                    className="bg-transparent border-white/10 font-sans text-sm min-w-0"
                   />
-                  <div className="flex items-center gap-1 w-36">
-                    <span className="text-muted-foreground font-mono text-sm">₹</span>
+                  <div className="flex items-center gap-1 w-28 sm:w-36 shrink-0">
+                    <span className="text-muted-foreground font-mono text-xs sm:text-sm">₹</span>
                     <Input
                       type="number"
                       value={exp.budgeted}
                       onChange={(e) => updateBudget(exp.id, Number(e.target.value))}
-                      className="bg-black/30 border-white/20 font-mono focus-visible:ring-primary"
+                      className="bg-black/30 border-white/20 font-mono text-sm focus-visible:ring-primary"
                     />
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => deleteBudgetCategory(exp.id)}
-                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               ))}
 
-              <div className="pt-4 border-t border-white/10 flex items-center gap-4">
+              <div className="pt-3 sm:pt-4 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <Input
                   placeholder="New Category Name"
                   value={newCatName}
                   onChange={(e) => setNewCatName(e.target.value)}
-                  className="bg-black/50 border-white/20"
+                  className="bg-black/50 border-white/20 flex-1"
                 />
-                <div className="flex items-center gap-1 w-36">
-                  <span className="text-muted-foreground font-mono text-sm">₹</span>
-                  <Input
-                    type="number"
-                    placeholder="Amount"
-                    value={newCatAmount}
-                    onChange={(e) => setNewCatAmount(e.target.value)}
-                    className="bg-black/50 border-white/20 font-mono"
-                  />
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 flex-1 sm:w-36">
+                    <span className="text-muted-foreground font-mono text-sm">₹</span>
+                    <Input
+                      type="number"
+                      placeholder="Amount"
+                      value={newCatAmount}
+                      onChange={(e) => setNewCatAmount(e.target.value)}
+                      className="bg-black/50 border-white/20 font-mono"
+                    />
+                  </div>
+                  <Button onClick={handleAdd} className="bg-white/10 hover:bg-white/20 text-white shrink-0">
+                    <Plus className="w-4 h-4" />
+                  </Button>
                 </div>
-                <Button onClick={handleAdd} className="bg-white/10 hover:bg-white/20 text-white">
-                  <Plus className="w-4 h-4" />
-                </Button>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6">
           <Card className="glass-panel border-white/10">
             <CardHeader>
-              <CardTitle className="font-display tracking-widest text-lg text-accent">50/30/20 Protocol</CardTitle>
+              <CardTitle className="font-display tracking-widest text-base sm:text-lg text-accent">50/30/20 Protocol</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-5 sm:space-y-6">
               <div>
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-muted-foreground">Needs (50%)</span>

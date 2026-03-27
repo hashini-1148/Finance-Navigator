@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { ThreeBackground } from './ThreeBackground';
@@ -8,15 +8,26 @@ import { useLocation } from 'wouter';
 
 export function Layout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen text-foreground overflow-hidden selection:bg-primary/30">
       <CustomCursor />
       <ThreeBackground />
-      <Sidebar />
-      <main className="ml-[260px] flex flex-col min-h-screen">
-        <Header />
-        <div className="flex-1 p-8 overflow-y-auto relative">
+
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      <main className="md:ml-[260px] flex flex-col min-h-screen">
+        <Header onMenuClick={() => setSidebarOpen(o => !o)} />
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto relative">
           <AnimatePresence mode="wait">
             <motion.div
               key={location}

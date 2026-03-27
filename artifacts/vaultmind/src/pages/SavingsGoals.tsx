@@ -41,27 +41,32 @@ export default function SavingsGoals() {
   };
 
   return (
-    <div className="space-y-8 pb-12">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8 pb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white tracking-widest uppercase">Objective Subsystems</h1>
-          <p className="text-muted-foreground font-mono mt-2">Capital accumulation targets</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-white tracking-widest uppercase">Objective Subsystems</h1>
+          <p className="text-muted-foreground font-mono mt-1 sm:mt-2 text-sm">Capital accumulation targets</p>
         </div>
-        <Button onClick={() => setShowAdd(!showAdd)} className="bg-primary text-black hover:bg-primary/80 box-glow-cyan">
+        <Button onClick={() => setShowAdd(!showAdd)} className="bg-primary text-black hover:bg-primary/80 box-glow-cyan w-full sm:w-auto">
           <Plus className="w-4 h-4 mr-2" /> New Target
         </Button>
       </div>
 
       {showAdd && (
-        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="glass-panel p-6 border-primary/30 rounded-xl">
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-            <Input placeholder="Goal Name (e.g. Home Loan Down)" value={newGoal.name} onChange={e => setNewGoal({ ...newGoal, name: e.target.value })} className="bg-black/50 md:col-span-2" />
+        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="glass-panel p-4 sm:p-6 border-primary/30 rounded-xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4">
+            <Input
+              placeholder="Goal Name (e.g. Home Loan Down)"
+              value={newGoal.name}
+              onChange={e => setNewGoal({ ...newGoal, name: e.target.value })}
+              className="bg-black/50 sm:col-span-2"
+            />
             <div className="flex items-center gap-1">
-              <span className="text-muted-foreground font-mono text-sm">₹</span>
+              <span className="text-muted-foreground font-mono text-sm shrink-0">₹</span>
               <Input type="number" placeholder="Target Amount" value={newGoal.target} onChange={e => setNewGoal({ ...newGoal, target: e.target.value })} className="bg-black/50" />
             </div>
             <div className="flex items-center gap-1">
-              <span className="text-muted-foreground font-mono text-sm">₹</span>
+              <span className="text-muted-foreground font-mono text-sm shrink-0">₹</span>
               <Input type="number" placeholder="Current Funds" value={newGoal.current} onChange={e => setNewGoal({ ...newGoal, current: e.target.value })} className="bg-black/50" />
             </div>
             <Input type="date" value={newGoal.targetDate} onChange={e => setNewGoal({ ...newGoal, targetDate: e.target.value })} className="bg-black/50" />
@@ -70,7 +75,7 @@ export default function SavingsGoals() {
         </motion.div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {state.goals.map((goal) => {
           const progress = Math.min(100, Math.round((goal.current / goal.target) * 100));
           const isComplete = progress >= 100;
@@ -85,14 +90,14 @@ export default function SavingsGoals() {
                   className={`h-full ${isComplete ? 'bg-primary shadow-[0_0_10px_#00f5c8]' : 'bg-accent shadow-[0_0_10px_#0090ff]'}`}
                 />
               </div>
-              <CardContent className="p-6 relative">
+              <CardContent className="p-4 sm:p-6 relative">
                 {isComplete && <div className="absolute top-4 right-4 text-xs font-mono text-primary animate-pulse">ACHIEVED ✓</div>}
                 <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="font-display text-xl font-bold tracking-wide">{goal.name}</h3>
+                  <div className="flex-1 pr-3">
+                    <h3 className="font-display text-lg sm:text-xl font-bold tracking-wide">{goal.name}</h3>
                     <p className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{goal.priority}</p>
                   </div>
-                  <div className="w-12 h-12 rounded-full border-2 border-white/10 flex items-center justify-center relative">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-white/10 flex items-center justify-center relative shrink-0">
                     <svg className="absolute inset-0 w-full h-full -rotate-90">
                       <circle cx="24" cy="24" r="22" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
                       <circle
@@ -107,7 +112,7 @@ export default function SavingsGoals() {
                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Saved</span>
                     <span className="font-mono text-white">{formatINR(goal.current)}</span>
@@ -117,16 +122,16 @@ export default function SavingsGoals() {
                     <span className="font-mono text-white">{formatINR(goal.target)}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mt-4">
-                    <Calendar className="w-3 h-3" />
+                    <Calendar className="w-3 h-3 shrink-0" />
                     <span>ETA: {goal.targetDate ? format(new Date(goal.targetDate), 'dd MMM yyyy') : 'TBD'}</span>
                   </div>
                 </div>
 
-                <div className="mt-6 flex gap-2">
+                <div className="mt-5 sm:mt-6 flex gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex-1 bg-white/5 border-white/10 hover:bg-white/10"
+                    className="flex-1 bg-white/5 border-white/10 hover:bg-white/10 text-xs sm:text-sm"
                     onClick={() => {
                       const add = prompt('Enter amount to add (₹):');
                       if (add && !isNaN(Number(add))) {
@@ -136,7 +141,7 @@ export default function SavingsGoals() {
                   >
                     Add Funds
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={() => deleteGoal(goal.id)} className="text-destructive hover:bg-destructive/10">Delete</Button>
+                  <Button variant="ghost" size="sm" onClick={() => deleteGoal(goal.id)} className="text-destructive hover:bg-destructive/10 text-xs sm:text-sm">Delete</Button>
                 </div>
               </CardContent>
             </Card>

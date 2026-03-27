@@ -61,24 +61,24 @@ export default function Transactions() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'vaultmind-transactions.csv';
+    a.download = 'pocketpro-transactions.csv';
     a.click();
     URL.revokeObjectURL(url);
   };
 
   return (
-    <div className="space-y-8 pb-12">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8 pb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white tracking-widest uppercase">Ledger Matrix</h1>
-          <p className="text-muted-foreground font-mono mt-2">Transaction history log</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-white tracking-widest uppercase">Ledger Matrix</h1>
+          <p className="text-muted-foreground font-mono mt-1 sm:mt-2 text-sm">Transaction history log</p>
         </div>
-        <div className="flex gap-3">
-          <Button variant="outline" onClick={exportCSV} className="border-white/20 text-muted-foreground hover:text-white text-xs font-mono">
+        <div className="flex gap-2 sm:gap-3">
+          <Button variant="outline" onClick={exportCSV} className="border-white/20 text-muted-foreground hover:text-white text-xs font-mono flex-1 sm:flex-none">
             Export CSV
           </Button>
-          <Button onClick={() => setShowAdd(!showAdd)} className="bg-primary text-black hover:bg-primary/80 box-glow-cyan">
-            <Plus className="w-4 h-4 mr-2" /> Log Entry
+          <Button onClick={() => setShowAdd(!showAdd)} className="bg-primary text-black hover:bg-primary/80 box-glow-cyan flex-1 sm:flex-none">
+            <Plus className="w-4 h-4 mr-1 sm:mr-2" /> Log Entry
           </Button>
         </div>
       </div>
@@ -89,9 +89,9 @@ export default function Transactions() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="glass-panel p-6 border-primary/30 rounded-xl overflow-hidden"
+            className="glass-panel p-4 sm:p-6 border-primary/30 rounded-xl overflow-hidden"
           >
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
               <Select value={newTx.type} onValueChange={(v: any) => setNewTx({ ...newTx, type: v, category: v === 'income' ? 'Income' : '' })}>
                 <SelectTrigger className="bg-black/50 border-white/20">
                   <SelectValue />
@@ -103,7 +103,7 @@ export default function Transactions() {
               </Select>
 
               <Input type="date" value={newTx.date} onChange={e => setNewTx({ ...newTx, date: e.target.value })} className="bg-black/50" />
-              <Input placeholder="Description" value={newTx.description} onChange={e => setNewTx({ ...newTx, description: e.target.value })} className="bg-black/50 md:col-span-2" />
+              <Input placeholder="Description" value={newTx.description} onChange={e => setNewTx({ ...newTx, description: e.target.value })} className="bg-black/50 lg:col-span-2" />
 
               {newTx.type === 'expense' ? (
                 <Select value={newTx.category} onValueChange={(v) => setNewTx({ ...newTx, category: v })}>
@@ -119,56 +119,56 @@ export default function Transactions() {
               )}
 
               <div className="flex items-center gap-1">
-                <span className="text-primary font-bold text-lg">₹</span>
+                <span className="text-primary font-bold text-lg shrink-0">₹</span>
                 <Input type="number" placeholder="Amount" value={newTx.amount} onChange={e => setNewTx({ ...newTx, amount: e.target.value })} className="bg-black/50" />
               </div>
-              <Button onClick={handleAdd} className="bg-primary text-black md:col-span-6 mt-2">Record Transaction</Button>
+              <Button onClick={handleAdd} className="bg-primary text-black sm:col-span-2 lg:col-span-6 mt-1">Record Transaction</Button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       <Card className="glass-panel border-white/10">
-        <CardHeader className="flex flex-row items-center justify-between border-b border-white/5 pb-4">
-          <CardTitle className="font-display tracking-widest text-lg">Data Stream</CardTitle>
-          <div className="relative w-64">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-white/5 pb-4">
+          <CardTitle className="font-display tracking-widest text-base sm:text-lg">Data Stream</CardTitle>
+          <div className="relative w-full sm:w-56 lg:w-64">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Query logs..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 bg-black/50 border-white/20 focus-visible:ring-primary h-9 font-mono text-xs"
+              className="pl-9 bg-black/50 border-white/20 focus-visible:ring-primary h-9 font-mono text-xs w-full"
             />
           </div>
         </CardHeader>
-        <CardContent className="p-0">
+        <CardContent className="p-0 overflow-x-auto">
           <Table>
             <TableHeader className="bg-black/40">
               <TableRow className="border-white/5 hover:bg-transparent">
                 <TableHead className="font-mono text-xs tracking-wider">DATE</TableHead>
                 <TableHead className="font-mono text-xs tracking-wider">DESCRIPTION</TableHead>
-                <TableHead className="font-mono text-xs tracking-wider">CATEGORY</TableHead>
+                <TableHead className="font-mono text-xs tracking-wider hidden sm:table-cell">CATEGORY</TableHead>
                 <TableHead className="font-mono text-xs tracking-wider text-right">AMOUNT</TableHead>
-                <TableHead className="w-[50px]"></TableHead>
+                <TableHead className="w-[40px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredTxs.map((tx) => (
                 <TableRow key={tx.id} className="border-white/5 hover:bg-white/5 transition-colors group">
-                  <TableCell className="font-mono text-xs text-muted-foreground">
-                    {format(new Date(tx.date), 'dd.MM.yyyy')}
+                  <TableCell className="font-mono text-xs text-muted-foreground whitespace-nowrap">
+                    {format(new Date(tx.date), 'dd.MM.yy')}
                   </TableCell>
-                  <TableCell className="font-sans font-medium text-white">{tx.description}</TableCell>
-                  <TableCell>
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-[10px] font-mono border border-white/10 bg-white/5">
+                  <TableCell className="font-sans font-medium text-white text-sm max-w-[120px] sm:max-w-none truncate">{tx.description}</TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-[10px] font-mono border border-white/10 bg-white/5 whitespace-nowrap">
                       {tx.category}
                     </span>
                   </TableCell>
-                  <TableCell className={`text-right font-mono font-bold ${tx.type === 'income' ? 'text-primary' : 'text-white'}`}>
-                    <div className="flex items-center justify-end gap-2">
+                  <TableCell className={`text-right font-mono font-bold text-xs sm:text-sm whitespace-nowrap ${tx.type === 'income' ? 'text-primary' : 'text-white'}`}>
+                    <div className="flex items-center justify-end gap-1">
                       {tx.type === 'income'
-                        ? <ArrowUpRight className="w-3 h-3 text-primary" />
-                        : <ArrowDownRight className="w-3 h-3 text-destructive" />}
+                        ? <ArrowUpRight className="w-3 h-3 text-primary shrink-0" />
+                        : <ArrowDownRight className="w-3 h-3 text-destructive shrink-0" />}
                       {formatINR(tx.amount)}
                     </div>
                   </TableCell>
@@ -177,16 +177,16 @@ export default function Transactions() {
                       variant="ghost"
                       size="icon"
                       onClick={() => deleteTransaction(tx.id)}
-                      className="h-8 w-8 opacity-0 group-hover:opacity-100 hover:text-destructive hover:bg-destructive/10 transition-all"
+                      className="h-7 w-7 opacity-0 group-hover:opacity-100 hover:text-destructive hover:bg-destructive/10 transition-all"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3.5 h-3.5" />
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
               {filteredTxs.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-12 text-muted-foreground font-mono">
+                  <TableCell colSpan={5} className="text-center py-12 text-muted-foreground font-mono text-sm">
                     NO_DATA_FOUND
                   </TableCell>
                 </TableRow>

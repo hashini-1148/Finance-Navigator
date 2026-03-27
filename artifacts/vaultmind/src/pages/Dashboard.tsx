@@ -30,14 +30,14 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-8 pb-12">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8 pb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white tracking-widest uppercase">Command Center</h1>
-          <p className="text-muted-foreground font-mono mt-2">Real-time financial telemetry</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-white tracking-widest uppercase">Command Center</h1>
+          <p className="text-muted-foreground font-mono mt-1 sm:mt-2 text-sm">Real-time financial telemetry</p>
         </div>
-        <div className="text-right">
-          <div className="text-2xl font-mono text-primary text-glow-cyan">
+        <div className="text-left sm:text-right">
+          <div className="text-lg sm:text-2xl font-mono text-primary text-glow-cyan">
             {new Date().toLocaleTimeString('en-IN', { hour12: false })}
           </div>
           <div className="text-xs text-muted-foreground uppercase tracking-widest">
@@ -47,67 +47,67 @@ export default function Dashboard() {
       </div>
 
       {/* KPI GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         <Card className="glass-panel border-t-primary/50 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Monthly Income</CardTitle>
-            <ArrowUpRight className="h-4 w-4 text-primary" />
+          <CardHeader className="flex flex-row items-center justify-between pb-1 sm:pb-2 p-3 sm:p-6">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground uppercase tracking-wider">Monthly Income</CardTitle>
+            <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 text-primary shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-display font-bold text-white">{formatINR(state.income)}</div>
+          <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-white">{formatINR(state.income)}</div>
           </CardContent>
         </Card>
 
         <Card className="glass-panel border-t-destructive/50 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-br from-destructive/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Total Expenses</CardTitle>
-            <ArrowDownRight className="h-4 w-4 text-destructive" />
+          <CardHeader className="flex flex-row items-center justify-between pb-1 sm:pb-2 p-3 sm:p-6">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground uppercase tracking-wider">Total Expenses</CardTitle>
+            <ArrowDownRight className="h-3 w-3 sm:h-4 sm:w-4 text-destructive shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-display font-bold text-white">{formatINR(totalExpenses)}</div>
+          <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-white">{formatINR(totalExpenses)}</div>
           </CardContent>
         </Card>
 
         <Card className="glass-panel border-t-accent/50 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Net Savings</CardTitle>
-            <Wallet className="h-4 w-4 text-accent" />
+          <CardHeader className="flex flex-row items-center justify-between pb-1 sm:pb-2 p-3 sm:p-6">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground uppercase tracking-wider">Net Savings</CardTitle>
+            <Wallet className="h-3 w-3 sm:h-4 sm:w-4 text-accent shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-display font-bold text-white">{formatINR(netSavings)}</div>
+          <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-white">{formatINR(netSavings)}</div>
           </CardContent>
         </Card>
 
         <Card className="glass-panel border-t-[#b537f2]/50 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-br from-[#b537f2]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Savings Rate</CardTitle>
-            <Activity className="h-4 w-4 text-[#b537f2]" />
+          <CardHeader className="flex flex-row items-center justify-between pb-1 sm:pb-2 p-3 sm:p-6">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground uppercase tracking-wider">Savings Rate</CardTitle>
+            <Activity className="h-3 w-3 sm:h-4 sm:w-4 text-[#b537f2] shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-display font-bold text-white">{savingsRate}%</div>
+          <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-white">{savingsRate}%</div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
         {/* DONUT CHART */}
         <Card className="glass-panel lg:col-span-1 border-white/10">
-          <CardHeader>
-            <CardTitle className="font-display tracking-widest text-lg">Expense Distribution</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="font-display tracking-widest text-base sm:text-lg">Expense Distribution</CardTitle>
           </CardHeader>
-          <CardContent className="h-[300px] flex flex-col items-center justify-center">
+          <CardContent className="h-[240px] sm:h-[300px] flex flex-col items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={expenseData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
+                  innerRadius={55}
+                  outerRadius={75}
                   paddingAngle={5}
                   dataKey="value"
                   stroke="none"
@@ -128,14 +128,14 @@ export default function Dashboard() {
 
         {/* TREND CHART */}
         <Card className="glass-panel lg:col-span-2 border-white/10">
-          <CardHeader>
-            <CardTitle className="font-display tracking-widest text-lg">Cash Flow Vector</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="font-display tracking-widest text-base sm:text-lg">Cash Flow Vector</CardTitle>
           </CardHeader>
-          <CardContent className="h-[300px]">
+          <CardContent className="h-[240px] sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={trendData} margin={{ top: 20, right: 30, left: 10, bottom: 0 }}>
-                <XAxis dataKey="name" stroke="#4a7a9b" fontFamily="Space Mono" fontSize={12} />
-                <YAxis stroke="#4a7a9b" fontFamily="Space Mono" fontSize={11} tickFormatter={(v) => '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)} />
+              <BarChart data={trendData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <XAxis dataKey="name" stroke="#4a7a9b" fontFamily="Space Mono" fontSize={11} />
+                <YAxis stroke="#4a7a9b" fontFamily="Space Mono" fontSize={10} tickFormatter={(v) => '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)} width={45} />
                 <RechartsTooltip
                   cursor={{ fill: 'rgba(255,255,255,0.05)' }}
                   formatter={(value: number) => [formatINR(value), '']}
