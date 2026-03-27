@@ -60,7 +60,7 @@ const defaultState: AppState = {
   ],
   settings: {
     apiKey: '',
-    selectedModel: 'gemini-2.0-flash',
+    selectedModel: 'gemini-2.5-flash',
     onboardingComplete: false,
   }
 };
@@ -88,11 +88,35 @@ export function useAppState() {
   return context;
 }
 
+const VALID_GEMINI_MODELS = new Set([
+  "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.5-pro",
+  "gemini-2.0-flash", "gemini-2.0-flash-lite",
+  "gemini-1.5-flash", "gemini-1.5-flash-8b", "gemini-1.5-pro",
+]);
+
+function migrateSettings(settings: AppState['settings']): AppState['settings'] {
+  // Clear OpenRouter keys (sk-or-v1-...) — they don't work with Gemini
+  const apiKey = settings.apiKey?.startsWith('sk-or-') ? '' : (settings.apiKey || '');
+  // Reset invalid model IDs (old OpenRouter model slugs like google/gemini-2.0-flash-exp:free)
+  const selectedModel = VALID_GEMINI_MODELS.has(settings.selectedModel)
+    ? settings.selectedModel
+    : 'gemini-2.5-flash';
+  return { ...settings, apiKey, selectedModel };
+}
+
 export function useAppStateInit() {
   const [state, setState] = useState<AppState>(() => {
     try {
       const saved = localStorage.getItem('vaultmind_state');
-      if (saved) return { ...defaultState, ...JSON.parse(saved) };
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          ...defaultState,
+          ...parsed,
+          // Deep merge settings with migration
+          settings: migrateSettings({ ...defaultState.settings, ...(parsed.settings || {}) }),
+        };
+      }
     } catch (e) {
       console.error('Failed to load state', e);
     }

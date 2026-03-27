@@ -15,7 +15,7 @@ type Message = { role: 'user' | 'assistant'; content: string };
 
 export default function AiAdvisor() {
   const { state, updateSettings } = useAppState();
-  const { askAi, isPending, error } = useOpenRouter();
+  const { askAi, isPending, error, isKeyInvalid } = useOpenRouter();
   const [, setLocation] = useLocation();
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: "Namaste! I'm PocketPro AI, powered by Google Gemini. My neural nets are connected to your financial data. Ask me anything about your budget, savings, SIPs, or taxes — I'll give you personalised Indian finance advice! 🇮🇳" }
@@ -52,7 +52,7 @@ export default function AiAdvisor() {
     "Emergency fund advice",
   ];
 
-  const noApiKey = !state.settings.apiKey;
+  const noApiKey = isKeyInvalid;
 
   return (
     <div className="h-[calc(100vh-8rem)] flex flex-col pb-6">
