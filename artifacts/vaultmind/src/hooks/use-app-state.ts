@@ -60,7 +60,7 @@ const defaultState: AppState = {
   ],
   settings: {
     apiKey: '',
-    selectedModel: 'google/gemini-2.0-flash-exp:free',
+    selectedModel: 'gemini-2.0-flash',
     onboardingComplete: false,
   }
 };

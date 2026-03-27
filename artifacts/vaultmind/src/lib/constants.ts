@@ -1,11 +1,9 @@
 export const AI_MODELS = [
-  { id: "deepseek/deepseek-r1:free", name: "DeepSeek R1 (Free)" },
-  { id: "meta-llama/llama-3.3-70b-instruct:free", name: "Llama 3.3 70B (Free)" },
-  { id: "mistralai/mistral-7b-instruct:free", name: "Mistral 7B (Free)" },
-  { id: "google/gemma-3-27b-it:free", name: "Gemma 3 27B (Free)" },
-  { id: "nousresearch/hermes-3-llama-3.1-405b:free", name: "Hermes 3 405B (Free)" },
-  { id: "microsoft/phi-3-mini-128k-instruct:free", name: "Phi-3 Mini (Free)" },
-  { id: "google/gemini-2.5-pro-exp-03-25:free", name: "Gemini 2.5 Pro (Free)" },
+  { id: "gemini-2.0-flash", name: "Gemini 2.0 Flash" },
+  { id: "gemini-2.0-flash-lite", name: "Gemini 2.0 Flash Lite" },
+  { id: "gemini-1.5-flash", name: "Gemini 1.5 Flash" },
+  { id: "gemini-1.5-flash-8b", name: "Gemini 1.5 Flash 8B" },
+  { id: "gemini-1.5-pro", name: "Gemini 1.5 Pro" },
 ];
 
 export const EXPENSE_CATEGORIES = [

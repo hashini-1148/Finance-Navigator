@@ -2,10 +2,9 @@ import { useState } from 'react';
 import { useAppState } from './use-app-state';
 import { SYSTEM_PROMPT } from '@/lib/constants';
 
-type Message = {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-};
+type ChatMessage = { role: 'user' | 'assistant'; content: string };
+
+const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
 
 export function useOpenRouter() {
   const { state } = useAppState();
@@ -15,55 +14,70 @@ export function useOpenRouter() {
   const getFinancialContextStr = () => {
     const totalExpenses = state.expenses.reduce((sum, e) => sum + e.budgeted, 0);
     const actualSpent = state.transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
-    
     return `
-    USER FINANCIAL CONTEXT (Indian Rupees ₹):
-    - Monthly Income: ₹${state.income.toLocaleString('en-IN')}
-    - Budgeted Expenses: ₹${totalExpenses.toLocaleString('en-IN')}
-    - Actual Spent (All Time): ₹${actualSpent.toLocaleString('en-IN')}
-    - Savings Goals: ${state.goals.map(g => `${g.name} (₹${g.current.toLocaleString('en-IN')}/₹${g.target.toLocaleString('en-IN')})`).join(', ')}
-    - Recent Transactions: ${state.transactions.slice(0, 5).map(t => `${t.date}: ${t.description} (₹${t.amount.toLocaleString('en-IN')})`).join(', ')}
-    `;
+USER FINANCIAL CONTEXT (Indian Rupees ₹):
+- Monthly Income: ₹${state.income.toLocaleString('en-IN')}
+- Budgeted Expenses: ₹${totalExpenses.toLocaleString('en-IN')}
+- Actual Spent (All Time): ₹${actualSpent.toLocaleString('en-IN')}
+- Net Monthly Savings: ₹${(state.income - totalExpenses).toLocaleString('en-IN')}
+- Savings Goals: ${state.goals.map(g => `${g.name} (₹${g.current.toLocaleString('en-IN')}/₹${g.target.toLocaleString('en-IN')})`).join(', ')}
+- Budget Allocation: ${state.expenses.map(e => `${e.category}: ₹${e.budgeted.toLocaleString('en-IN')}`).join(', ')}
+- Recent Transactions: ${state.transactions.slice(0, 8).map(t => `${t.description}: ₹${t.amount.toLocaleString('en-IN')} (${t.type})`).join(', ')}
+    `.trim();
   };
 
-  const askAi = async (prompt: string, messagesHistory: Message[] = [], modelOverride?: string) => {
+  const askAi = async (prompt: string, messagesHistory: ChatMessage[] = [], modelOverride?: string): Promise<string> => {
     if (!state.settings.apiKey) {
-      throw new Error("OpenRouter API Key is missing. Please add it in settings.");
+      const err = "Google AI Studio API key is missing. Click 'Set API Key' to add it.";
+      setError(err);
+      throw new Error(err);
     }
 
     setIsPending(true);
     setError(null);
 
     const model = modelOverride || state.settings.selectedModel;
-    
-    const messages: Message[] = [
-      { role: 'system', content: SYSTEM_PROMPT + '\n' + getFinancialContextStr() },
-      ...messagesHistory,
-      { role: 'user', content: prompt }
-    ];
+    const systemInstruction = SYSTEM_PROMPT + '\n\n' + getFinancialContextStr();
+
+    // Build Gemini-format contents array (role: "user" | "model")
+    // Skip the initial greeting from assistant history to avoid role conflict
+    const geminiContents = messagesHistory
+      .filter((_, i) => i > 0) // skip first assistant greeting
+      .map(m => ({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content }]
+      }));
+
+    // Append current user prompt
+    geminiContents.push({ role: 'user', parts: [{ text: prompt }] });
+
+    const body = {
+      systemInstruction: { parts: [{ text: systemInstruction }] },
+      contents: geminiContents,
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 1500,
+      }
+    };
 
     try {
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      const url = `${GEMINI_API_BASE}/${model}:generateContent?key=${state.settings.apiKey}`;
+      const response = await fetch(url, {
         method: "POST",
-        headers: {
-          "Authorization": `Bearer ${state.settings.apiKey}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": window.location.href,
-          "X-Title": "PocketPro Finance Assistant"
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: messages,
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
       });
 
       if (!response.ok) {
         const errData = await response.json();
-        throw new Error(errData.error?.message || "Failed to fetch AI response");
+        const msg = errData?.error?.message || `API error ${response.status}`;
+        throw new Error(msg);
       }
 
       const data = await response.json();
-      return data.choices[0].message.content as string;
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error("Empty response from Gemini.");
+      return text as string;
 
     } catch (err: any) {
       setError(err.message);
@@ -75,21 +89,18 @@ export function useOpenRouter() {
 
   const compareModels = async (prompt: string, models: string[]) => {
     if (!state.settings.apiKey) {
-      throw new Error("OpenRouter API Key is missing.");
+      throw new Error("Google AI Studio API key is missing.");
     }
-    
     setIsPending(true);
     setError(null);
-
     try {
-      const promises = models.map(async (model) => {
-        const startTime = Date.now();
-        const content = await askAi(prompt, [], model);
-        const duration = Date.now() - startTime;
-        return { model, content, duration };
-      });
-
-      const results = await Promise.all(promises);
+      const results = await Promise.all(
+        models.map(async (model) => {
+          const startTime = Date.now();
+          const content = await askAi(prompt, [], model);
+          return { model, content, duration: Date.now() - startTime };
+        })
+      );
       return results;
     } catch (err: any) {
       setError(err.message);

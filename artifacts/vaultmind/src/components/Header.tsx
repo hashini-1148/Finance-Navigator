@@ -21,10 +21,7 @@ export function Header() {
 
   const handleSaveKey = () => {
     updateSettings({ apiKey: keyInput });
-    toast({
-      title: "API Key Saved",
-      description: "Securely stored in your browser.",
-    });
+    toast({ title: "Gemini API Key Saved", description: "Stored securely in your browser." });
   };
 
   const handleExport = () => {
@@ -52,24 +49,27 @@ export function Header() {
           <DialogTrigger asChild>
             <Button variant="outline" className="glass-panel border-primary/30 text-primary hover:bg-primary/10 transition-all">
               <Key className="w-4 h-4 mr-2" />
-              {state.settings.apiKey ? 'Key Active ✓' : 'Set API Key'}
+              {state.settings.apiKey ? 'Gemini Key ✓' : 'Set Gemini Key'}
             </Button>
           </DialogTrigger>
-          <DialogContent className="glass-panel border-primary/30 sm:max-w-md">
+          <DialogContent className="glass-panel border-primary/30 sm:max-w-lg">
             <DialogHeader>
-              <DialogTitle className="font-display text-primary">OpenRouter API Key</DialogTitle>
-              <DialogDescription>
-                PocketPro uses OpenRouter to power AI analysis. Your key is stored only in your local browser — never sent to our servers.
+              <DialogTitle className="font-display text-primary flex items-center gap-2">
+                <span>Google AI Studio API Key</span>
+              </DialogTitle>
+              <DialogDescription className="text-muted-foreground text-sm">
+                PocketPro uses Gemini (Google AI Studio) for AI analysis. Your key is stored only in your local browser — never sent to our servers.
               </DialogDescription>
             </DialogHeader>
+
             <div className="flex items-center space-x-2 mt-4">
               <div className="relative flex-1">
                 <Input
                   type={showKey ? "text" : "password"}
                   value={keyInput}
                   onChange={(e) => setKeyInput(e.target.value)}
-                  className="bg-black/50 border-white/20 focus-visible:ring-primary pr-10 font-mono"
-                  placeholder="sk-or-v1-..."
+                  className="bg-black/50 border-white/20 focus-visible:ring-primary pr-10 font-mono text-sm"
+                  placeholder="AIza..."
                 />
                 <button
                   onClick={() => setShowKey(!showKey)}
@@ -82,9 +82,16 @@ export function Header() {
                 <Save className="w-4 h-4 mr-2" /> Save
               </Button>
             </div>
-            <div className="mt-3 text-xs text-muted-foreground space-y-1">
-              <p>Get a free API key at <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer" className="text-primary hover:underline">openrouter.ai/keys</a></p>
-              <p className="text-yellow-400/80">💡 Free tier: use models marked (Free) in the AI Advisor dropdown.</p>
+
+            <div className="mt-4 p-3 rounded-lg bg-white/5 border border-white/10 text-xs text-muted-foreground space-y-2">
+              <p className="text-white font-medium">How to get your free API key:</p>
+              <ol className="list-decimal list-inside space-y-1">
+                <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-primary hover:underline">aistudio.google.com/app/apikey</a></li>
+                <li>Sign in with your Google account</li>
+                <li>Click <strong>"Create API Key"</strong></li>
+                <li>Copy and paste it above</li>
+              </ol>
+              <p className="text-yellow-400/80">✓ Free tier includes Gemini 2.0 Flash, 1.5 Flash and more — no credit card needed.</p>
             </div>
           </DialogContent>
         </Dialog>
