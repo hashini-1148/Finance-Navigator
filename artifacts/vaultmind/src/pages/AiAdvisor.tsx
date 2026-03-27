@@ -18,7 +18,7 @@ export default function AiAdvisor() {
   const { askAi, isPending, error, isKeyInvalid } = useOpenRouter();
   const [, setLocation] = useLocation();
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Namaste! I'm PocketPro AI, powered by Google Gemini. My neural nets are connected to your financial data. Ask me anything about your budget, savings, SIPs, or taxes — I'll give you personalised Indian finance advice! 🇮🇳" }
+    { role: 'assistant', content: "Welcome! I'm PocketPro AI, powered by D4RK LEIGE. My neural nets are connected to your financial data. Ask me anything about your budget, savings, SIPs, or taxes — I'll give you personalised Indian finance advice! 🇮🇳" }
   ]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -62,7 +62,7 @@ export default function AiAdvisor() {
             <Brain className="w-8 h-8 text-[#b537f2] animate-pulse" />
             Gemini Advisor
           </h1>
-          <p className="text-muted-foreground font-mono mt-1 text-sm">Powered by Google AI Studio · Indian Finance Expert</p>
+          <p className="text-muted-foreground font-mono mt-1 text-sm">Powered by D4RK LEIGE · Indian Finance Expert</p>
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
@@ -91,18 +91,15 @@ export default function AiAdvisor() {
         <div className="bg-yellow-500/10 border border-yellow-500/40 text-yellow-300 px-4 py-3 rounded-xl mb-4 text-sm font-sans flex items-center gap-3 shrink-0">
           <Key className="w-4 h-4 shrink-0" />
           <span>
-            Add your <strong>Google AI Studio API key</strong> to start chatting.{' '}
+            Add your <strong>D4RK LEIGE KEY</strong> to start chatting.{' '}
             <button
               className="underline text-primary hover:text-primary/80 ml-1"
               onClick={() => {
-                const btn = document.querySelector('[data-set-key]') as HTMLButtonElement;
-                btn?.click();
-                // Fallback: click the header key button
-                const headerBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent?.includes('Gemini Key') || b.textContent?.includes('Set Gemini Key'));
+                const headerBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent?.includes('D4RK LEIGE KEY') || b.textContent?.includes('Set D4RK LEIGE KEY'));
                 headerBtn?.click();
               }}
             >
-              Click "Set Gemini Key" in the top-right to get started.
+              Click "Set D4RK LEIGE KEY" in the top-right to get started.
             </button>
           </span>
         </div>
@@ -178,7 +175,7 @@ export default function AiAdvisor() {
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={noApiKey ? "Add your Gemini API key to start..." : "Ask PocketPro AI anything about your finances..."}
+              placeholder={noApiKey ? "Add your D4RK LEIGE KEY to start..." : "Ask PocketPro AI anything about your finances..."}
               className="bg-black/80 border-primary/30 h-14 font-sans text-base focus-visible:ring-primary focus-visible:ring-offset-0 relative z-10"
               disabled={isPending || noApiKey}
             />

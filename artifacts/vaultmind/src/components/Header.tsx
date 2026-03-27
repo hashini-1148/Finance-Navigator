@@ -21,7 +21,7 @@ export function Header() {
 
   const handleSaveKey = () => {
     updateSettings({ apiKey: keyInput });
-    toast({ title: "Gemini API Key Saved", description: "Stored securely in your browser." });
+    toast({ title: "D4RK LEIGE KEY Saved", description: "Stored securely in your browser." });
   };
 
   const handleExport = () => {
@@ -49,16 +49,16 @@ export function Header() {
           <DialogTrigger asChild>
             <Button variant="outline" className="glass-panel border-primary/30 text-primary hover:bg-primary/10 transition-all">
               <Key className="w-4 h-4 mr-2" />
-              {state.settings.apiKey ? 'Gemini Key ✓' : 'Set Gemini Key'}
+              {state.settings.apiKey ? 'D4RK LEIGE KEY ✓' : 'Set D4RK LEIGE KEY'}
             </Button>
           </DialogTrigger>
           <DialogContent className="glass-panel border-primary/30 sm:max-w-lg">
             <DialogHeader>
               <DialogTitle className="font-display text-primary flex items-center gap-2">
-                <span>Google AI Studio API Key</span>
+                <span>D4RK LEIGE KEY</span>
               </DialogTitle>
               <DialogDescription className="text-muted-foreground text-sm">
-                PocketPro uses Gemini (Google AI Studio) for AI analysis. Your key is stored only in your local browser — never sent to our servers.
+                PocketPro uses D4RK LEIGE (Google AI Studio) for AI analysis. Your key is stored only in your local browser — never sent to our servers.
               </DialogDescription>
             </DialogHeader>
 
@@ -84,7 +84,7 @@ export function Header() {
             </div>
 
             <div className="mt-4 p-3 rounded-lg bg-white/5 border border-white/10 text-xs text-muted-foreground space-y-2">
-              <p className="text-white font-medium">How to get your free API key:</p>
+              <p className="text-white font-medium">How to get your free D4RK LEIGE KEY:</p>
               <ol className="list-decimal list-inside space-y-1">
                 <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-primary hover:underline">aistudio.google.com/app/apikey</a></li>
                 <li>Sign in with your Google account</li>

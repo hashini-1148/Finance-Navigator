@@ -60,8 +60,8 @@ export function useOpenRouter() {
   const askAi = async (prompt: string, messagesHistory: ChatMessage[] = [], modelOverride?: string): Promise<string> => {
     if (!effectiveKey) {
       const msg = isOpenRouterKey
-        ? "That looks like an OpenRouter key (sk-or-...). Please enter a Google AI Studio key from aistudio.google.com/app/apikey"
-        : "Add your Google AI Studio API key to start — click 'Set Gemini Key' above.";
+        ? "That looks like an OpenRouter key (sk-or-...). Please enter a D4RK LEIGE KEY from aistudio.google.com/app/apikey"
+        : "Add your D4RK LEIGE KEY to start — click 'Set D4RK LEIGE KEY' above.";
       setError(msg);
       throw new Error(msg);
     }
